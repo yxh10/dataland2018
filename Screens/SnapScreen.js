@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import { RNCamera } from 'react-native-camera';
+import ImageResizer from 'react-native-image-resizer';
 
 export default class SnapScreen extends Component {
 	constructor(props) {
@@ -44,7 +45,6 @@ export default class SnapScreen extends Component {
 	
 	takePicture = async function() {
 		const { navigate } = this.props.navigation;
-		// let { width, height } = Dimensions.get('window');
 		const height = 1024;
 		const width = 1024; 
 
@@ -67,10 +67,6 @@ export default class SnapScreen extends Component {
 					rotation
 				)
 
-				// const filePath = Platform.OS === 'android' && resizedImageUri.uri.replace
-				//   ? resizedImageUri.uri.replace('file:/data', '/data')
-				//   : resizedImageUri.uri
-
 				const filePath = resizedImageUri.path;
 
 				if(filePath) {
@@ -83,7 +79,11 @@ export default class SnapScreen extends Component {
 						type: 'image/jpeg'
 					};
 
-					photoForm.append('file', photo);
+					photoForm.append('photo', photo);
+					photoForm.append('name', 'plant_photo');
+					photoForm.append('description', 'I have found something bad');
+					photoForm.append('lon', '100');
+					photoForm.append('lat', '120');
 
 					navigate('SnapResult', { 
 						photoForm: photoForm,
@@ -127,7 +127,6 @@ const styles = StyleSheet.create({
 	capture: {
 		flex: 0,
 		backgroundColor: '#fff',
-		color: '#000',
 		padding: 8,
 		margin: 18,
 		width: 56,

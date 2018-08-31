@@ -13,7 +13,13 @@ const RootStack = createStackNavigator({
       header: null //this will hide the header
     },
   },
-  Snap: { screen: SnapScreen },
+  Snap: { 
+    screen: SnapScreen,
+    navigationOptions: {
+      title: 'Snap',
+      header: null //this will hide the header
+    },
+  },
   SnapResult: { screen: SnapResultScreen}
 });
 

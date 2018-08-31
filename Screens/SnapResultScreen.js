@@ -1,6 +1,6 @@
 import React from 'react';
 import { ActivityIndicator, Button, Dimensions, Image, Platform, StyleSheet, Text, TextInput, View } from 'react-native';
-// import SnapService  from 'shared/SnapService';
+
 
 const { width, height } = Dimensions.get('window');
 export default class SnapResultScreen extends React.Component {
@@ -11,7 +11,7 @@ export default class SnapResultScreen extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			machineReadPlateNumber: 'Processing...',
+			loadingText: 'Processing...',
 			isLoading: false
 		}
 
@@ -23,7 +23,7 @@ export default class SnapResultScreen extends React.Component {
 	componentDidMount() {
 		const { navigation } = this.props;
 		this.photoForm = navigation.getParam('photoForm', {});
-		this.readPlateNumber(this.photoForm);
+		this.recognisePhoto(this.photoForm);
 	}
 
 	render() {
@@ -35,7 +35,7 @@ export default class SnapResultScreen extends React.Component {
 
 		return (
 			<View style={ styles.MainContainer }>
-				<View style={ LoadingIndicator }>
+				<View style={ styles.LoadingIndicator }>
 					{ 
 						this.state.isLoading &&
 						<ActivityIndicator size="large" color="#00ff00" />
@@ -53,7 +53,7 @@ export default class SnapResultScreen extends React.Component {
 
 				<View>
 					<Text>
-						Read Plate Number: { this.state.machineReadPlateNumber }
+						The disease is: { this.state.diseaseName }
 					</Text>
 				</View>
 
@@ -62,24 +62,6 @@ export default class SnapResultScreen extends React.Component {
 						title="Snap"
 						onPress={() => this.navigate('Snap', {})}
 					/>
-				</View>
-
-				<View>
-					<Button
-						title="Input"
-						onPress={() => this.navigate('Input', {})}
-					/>
-				</View>
-
-				<View>
-					<TextInput
-						onChangeText={
-							(text) => this.setState({
-								humanReadPlateNumber: text
-							})
-						}
-						value={this.state.humanReadPlateNumber}
-						/>
 				</View>
 
 				<View>
@@ -93,43 +75,46 @@ export default class SnapResultScreen extends React.Component {
 		)
 	}
 
-	async readPlateNumber(photoForm) {
+	async recognisePhoto(photoForm) {
 
 		this.setState({
 			isLoading: true
 		});
-		
-		const response = await fetch('http://expprojs.azurewebsites.net/api/PlateRecognition/parsebytext', {
-			method: 'POST',
-			headers: {
-				'Authorization': '9ee56eef-1980-4e34-9aa6-84c235d0e198',
-				"Accept": "application/json"
-			},
-			body: photoForm
-		});
-		
-		if(response.ok === true) {
-			let result = await response.json();
-			console.log(result);
-
-			this.setState({
-				isLoading: false,
-				machineReadPlateNumber: result
+		try {	
+			console.log(photoForm)
+			const response = await fetch('http://192.168.20.55:8000/mpi/upload/', {
+				method: 'POST',
+				headers: {
+					// 'Authorization': '',
+					"Accept": "application/json"
+				},
+				body: photoForm
 			});
+	
+			if(response.ok === true) {
+				let result = await response.json();
+				// console.log(result);
 
-		} else {
-			console.error(response.status + ' ' + response.statusText);
-			this.setState({
-				isLoading: false
-			});
+				this.setState({
+					isLoading: false,
+					diseaseName: result.name
+				});
+
+			} else {
+				console.error(response.status + ' ' + response.statusText);
+				this.setState({
+					isLoading: false
+				});
+			}
+		} catch(error) {
+			console.log(error)
 		}
 	}
 	
 
 	async report() {
 		if(this.photoForm) {
-			this.photoForm.append('parsedValue', this.state.machineReadPlateNumber);
-			this.photoForm.append('plateValue', this.state.humanReadPlateNumber);
+			this.photoForm.append('parsedValue', this.state.diseaseName);
 
 			//todo: loading, progress bar
 			try {
