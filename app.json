@@ -1,4 +1,6 @@
 {
+  "name": "Snapbio",
+  "displayName": "Snapbio",
   "expo": {
     "sdkVersion": "27.0.0"
   }
