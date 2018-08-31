@@ -1,15 +1,25 @@
-import React from 'react';
+import React, {Component} from 'react';
+import { createStackNavigator } from 'react-navigation';
 import { StyleSheet, Text, View } from 'react-native';
+import HomeScreen from './Screens/HomeScreen';
+import SnapScreen from './Screens/SnapScreen';
+import SnapResultScreen from './Screens/SnapResultScreen';
 
-export default class App extends React.Component {
+const RootStack = createStackNavigator({
+  Home: { 
+    screen: HomeScreen,
+    navigationOptions: {
+      title: 'Home',
+      header: null //this will hide the header
+    },
+  },
+  Snap: { screen: SnapScreen },
+  SnapResult: { screen: SnapResultScreen}
+});
+
+export default class App extends Component {
   render() {
-    return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
-      </View>
-    );
+    return <RootStack />;
   }
 }
 
