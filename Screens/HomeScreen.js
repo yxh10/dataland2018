@@ -10,7 +10,7 @@ export default class HomeScreen extends Component {
 		const {navigate} =this.props.navigation;
 		return (
 			<View styles={styles.MainContainer}>
-				<View styles={styles.ButtonList}>
+				<View style= {styles.ButtonTopView}>
 					<Button
 							title="Report Sighting"
 							styles={ styles.buttonStyle }
@@ -20,6 +20,8 @@ export default class HomeScreen extends Component {
 								}
 							}
 						/>
+				</View>
+				<View style= {styles.ButtonBottomView}>
 						<Button
 							title="View Alerts"
 							styles={ styles.buttonStyle }
@@ -45,9 +47,13 @@ const styles = StyleSheet.create({
 		height: Dimensions.get('window').height,
 		width: Dimensions.get('window').width
 	},
-	ButtonList: {
-		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'center',
+	ButtonBottomView: {
+		margin: 10,
+		width: Dimensions.get('window').width * 0.618
+	},
+	ButtonTopView: {
+		margin: 10,
+		width: Dimensions.get('window').width * 0.618
 	}
+
 })

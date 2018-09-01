@@ -1,6 +1,5 @@
 import React from 'react';
 import { ActivityIndicator, Button, Dimensions, Image, Platform, StyleSheet, Text, TextInput, View } from 'react-native';
-import { Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
 
 const { width, height } = Dimensions.get('window');
 export default class AlertListScreen extends React.Component {
@@ -16,6 +15,7 @@ export default class AlertListScreen extends React.Component {
 			photoUri: '',
 			alerts: [
 				{
+					id: 1,
 					photoUri: 'https://plantdoctor.co.nz/assets/uploads/2017/05/myrtle-rust-1.jpg',
 					diseaseName: 'Myrtle rust',
 					severity: 'High',
@@ -43,40 +43,27 @@ export default class AlertListScreen extends React.Component {
 		}
 	}
 
+	gotoDetail(id) {
+		console.log('I am in nav');
+		const navigate = this.props.navigation.navigate;
+		navigate('AlertDetail', {id: id})
+	}
+
 	getCard(alert) {
 		return (
-			<Card>
-				<CardItem>
-					<Left>
-						<Thumbnail source={{uri: 'Image URL'}} />
-						<Body>
-							<Text>NativeBase</Text>
-							<Text note>GeekyAnts</Text>
-						</Body>
-					</Left>
-				</CardItem>
-				<CardItem cardBody>
-					<Image source={{uri: alert.photoUri}} style={{height: 200, width: null, flex: 1}}/>
-				</CardItem>
-				<CardItem>
-					<Left>
-						<Text>{alert.name}</Text>
-						<Button transparent>
-							<Icon active name="thumbs-up" />
-							<Text>12 Likes</Text>
-						</Button>
-					</Left>
-					<Body>
-						<Button transparent>
-							<Icon active name="chatbubbles" />
-							<Text>4 Comments</Text>
-						</Button>
-					</Body>
-					<Right>
-						<Text>11h ago</Text>
-					</Right>
-				</CardItem>
-			</Card>
+			<View key={alert.id} style={styles.Card} onClick={() => this.gotoDetail(alert.id)}>
+				<View>
+					<Image
+						style= {{
+							width: width * 0.9,
+							height: 260 
+						}}
+						source= {{ uri: alert.photoUri }}
+					/>
+				</View>
+				<Text style={styles.cardContent}>{alert.diseaseName}</Text>
+				<Text style={styles.cardContent}>{alert.severity}</Text>
+			</View>
 		)
 	}
 
@@ -85,7 +72,7 @@ export default class AlertListScreen extends React.Component {
 		const {photoUri} = this.state;
 		
 		this.navigate = navigation.navigate;
-		const screenPhotoRatio = width / this.photoDetails.width;
+		// const screenPhotoRatio = width / this.photoDetails.width;
 
 		return (
 			<View style={ styles.MainContainer }>
@@ -93,16 +80,16 @@ export default class AlertListScreen extends React.Component {
 					<View>
 						<Image
 							style= {{
-								width: this.photoDetails.width * screenPhotoRatio,
-								height: this.photoDetails.height * screenPhotoRatio
+								width: width * 0.9
 							}}
 							source= {{ uri: photoUri }}
 						/>
 					</View>
-
+					<View style={{marginTop: 20}}>
 				  {this.state.alerts.map((alert) => {
-						this.getCard(alert)
+						return this.getCard(alert)
 					})}
+					</View>
 					
 				</View>
 				{ this.loadingComponent() }
@@ -174,5 +161,15 @@ const styles = StyleSheet.create({
 	},
 	ButtonContainer: {
 		bottom: 0
+	},
+	Card: {
+		shadowOffset:{  width: 4,  height: 8,  },
+		shadowColor: 'black',
+		shadowOpacity: 1.0,
+		borderRadius: 5,
+		borderRadius: 4,
+    borderWidth: 1,
+		borderColor: '#d6d7da',
+		backgroundColor: 'white'
 	}
 })

@@ -61297,6 +61297,14 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 
   var _SnapResultScreen2 = _interopRequireDefault(_SnapResultScreen);
 
+  var _AlertListScreen = _require(_dependencyMap[7], "./Screens/AlertListScreen");
+
+  var _AlertListScreen2 = _interopRequireDefault(_AlertListScreen);
+
+  var _AlertDetailScreen = _require(_dependencyMap[8], "./Screens/AlertDetailScreen");
+
+  var _AlertDetailScreen2 = _interopRequireDefault(_AlertDetailScreen);
+
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -61340,7 +61348,25 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       }
     },
     SnapResult: {
-      screen: _SnapResultScreen2.default
+      screen: _SnapResultScreen2.default,
+      navigationOptions: {
+        title: 'Snap',
+        header: null
+      }
+    },
+    AlertList: {
+      screen: _AlertListScreen2.default,
+      navigationOptions: {
+        title: 'Alerts',
+        header: null
+      }
+    },
+    AlertDetail: {
+      screen: _AlertDetailScreen2.default,
+      navigationOptions: {
+        title: 'Alert Detail',
+        header: null
+      }
     }
   });
 
@@ -61359,7 +61385,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
         return _react3.default.createElement(RootStack, {
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 28
+            lineNumber: 50
           }
         });
       }
@@ -61378,7 +61404,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
       justifyContent: 'center'
     }
   });
-},491,[118,179,492,12,612,613,621],"App.js");
+},491,[118,179,492,12,612,613,621,622,623],"App.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
   module.exports = {
     get createNavigationContainer() {
@@ -80024,14 +80050,14 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 					_react3.default.createElement(
 						_reactNative.View,
 						{
-							styles: styles.ButtonList,
+							style: styles.ButtonTopView,
 							__source: {
 								fileName: _jsxFileName,
 								lineNumber: 13
 							}
 						},
 						_react3.default.createElement(_reactNative.Button, {
-							title: "Snap",
+							title: "Report Sighting",
 							styles: styles.buttonStyle,
 							onPress: function onPress() {
 								navigate('Snap', {});
@@ -80039,6 +80065,27 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 							__source: {
 								fileName: _jsxFileName,
 								lineNumber: 14
+							}
+						})
+					),
+					_react3.default.createElement(
+						_reactNative.View,
+						{
+							style: styles.ButtonBottomView,
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 24
+							}
+						},
+						_react3.default.createElement(_reactNative.Button, {
+							title: "View Alerts",
+							styles: styles.buttonStyle,
+							onPress: function onPress() {
+								navigate('AlertList', {});
+							},
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 25
 							}
 						})
 					)
@@ -80061,10 +80108,13 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 			height: _reactNative.Dimensions.get('window').height,
 			width: _reactNative.Dimensions.get('window').width
 		},
-		ButtonList: {
-			flex: 1,
-			alignItems: 'center',
-			justifyContent: 'center'
+		ButtonBottomView: {
+			margin: 10,
+			width: _reactNative.Dimensions.get('window').width * 0.618
+		},
+		ButtonTopView: {
+			margin: 10,
+			width: _reactNative.Dimensions.get('window').width * 0.618
 		}
 	});
 },612,[118,179,12],"Screens/HomeScreen.js");
@@ -80175,8 +80225,6 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 									photoForm.append('photo', photo);
 									photoForm.append('name', 'plant_photo');
 									photoForm.append('description', 'I have found something bad');
-									photoForm.append('lon', '100');
-									photoForm.append('lat', '120');
 									navigate('SnapResult', {
 										photoForm: photoForm,
 										photoDetails: {
@@ -88804,6 +88852,45 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 				this.recognisePhoto(this.photoForm);
 			}
 		}, {
+			key: "loadingComponent",
+			value: function loadingComponent() {
+				if (this.state.isLoading) {
+					return _react3.default.createElement(
+						_reactNative.View,
+						{
+							style: styles.LoadingIndicator,
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 32
+							}
+						},
+						_react3.default.createElement(_reactNative.ActivityIndicator, {
+							size: "large",
+							color: "#2979FF",
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 33
+							}
+						}),
+						_react3.default.createElement(
+							_reactNative.Text,
+							{
+								style: {
+									color: 'black'
+								},
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 34
+								}
+							},
+							this.loadingText
+						)
+					);
+				} else {
+					return null;
+				}
+			}
+		}, {
 			key: "render",
 			value: function render() {
 				var _this2 = this;
@@ -88818,123 +88905,123 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 						style: styles.MainContainer,
 						__source: {
 							fileName: _jsxFileName,
-							lineNumber: 37
+							lineNumber: 50
 						}
 					},
 					_react3.default.createElement(
 						_reactNative.View,
 						{
-							style: styles.LoadingIndicator,
+							styles: styles.ContentCotainer,
 							__source: {
 								fileName: _jsxFileName,
-								lineNumber: 38
-							}
-						},
-						this.state.isLoading && _react3.default.createElement(_reactNative.ActivityIndicator, {
-							size: "large",
-							color: "#00ff00",
-							__source: {
-								fileName: _jsxFileName,
-								lineNumber: 41
-							}
-						})
-					),
-					_react3.default.createElement(
-						_reactNative.View,
-						{
-							__source: {
-								fileName: _jsxFileName,
-								lineNumber: 44
-							}
-						},
-						_react3.default.createElement(_reactNative.Image, {
-							style: {
-								width: this.photoDetails.width * screenPhotoRatio,
-								height: this.photoDetails.height * screenPhotoRatio
-							},
-							source: {
-								uri: this.photoDetails.uri
-							},
-							__source: {
-								fileName: _jsxFileName,
-								lineNumber: 45
-							}
-						})
-					),
-					_react3.default.createElement(
-						_reactNative.View,
-						{
-							__source: {
-								fileName: _jsxFileName,
-								lineNumber: 54
+								lineNumber: 51
 							}
 						},
 						_react3.default.createElement(
-							_reactNative.Text,
+							_reactNative.View,
 							{
 								__source: {
 									fileName: _jsxFileName,
-									lineNumber: 55
+									lineNumber: 52
 								}
 							},
-							"The disease is: ",
-							this.state.diseaseName
+							_react3.default.createElement(_reactNative.Image, {
+								style: {
+									width: this.photoDetails.width * screenPhotoRatio,
+									height: this.photoDetails.height * screenPhotoRatio
+								},
+								source: {
+									uri: this.photoDetails.uri
+								},
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 53
+								}
+							})
+						),
+						_react3.default.createElement(
+							_reactNative.View,
+							{
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 62
+								}
+							},
+							_react3.default.createElement(
+								_reactNative.Text,
+								{
+									__source: {
+										fileName: _jsxFileName,
+										lineNumber: 63
+									}
+								},
+								"The disease is: ",
+								this.state.diseaseName
+							)
+						),
+						_react3.default.createElement(
+							_reactNative.View,
+							{
+								style: styles.ButtonContainer,
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 68
+								}
+							},
+							_react3.default.createElement(_reactNative.Button, {
+								title: "Snap",
+								onPress: function onPress() {
+									return _this2.navigate('Snap', {});
+								},
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 69
+								}
+							})
 						)
 					),
-					_react3.default.createElement(
-						_reactNative.View,
-						{
-							__source: {
-								fileName: _jsxFileName,
-								lineNumber: 60
-							}
-						},
-						_react3.default.createElement(_reactNative.Button, {
-							title: "Snap",
-							onPress: function onPress() {
-								return _this2.navigate('Snap', {});
-							},
-							__source: {
-								fileName: _jsxFileName,
-								lineNumber: 61
-							}
-						})
-					),
-					_react3.default.createElement(
-						_reactNative.View,
-						{
-							__source: {
-								fileName: _jsxFileName,
-								lineNumber: 67
-							}
-						},
-						_react3.default.createElement(_reactNative.Button, {
-							title: "Report",
-							onPress: function onPress() {
-								return _this2.report();
-							},
-							__source: {
-								fileName: _jsxFileName,
-								lineNumber: 68
-							}
-						})
-					)
+					this.loadingComponent()
 				);
+			}
+		}, {
+			key: "getGeoCoding",
+			value: function getGeoCoding() {
+				var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+				return new Promise(function (resolve, reject) {
+					return navigator.geolocation.getCurrentPosition(resolve, reject, options);
+				});
 			}
 		}, {
 			key: "recognisePhoto",
 			value: function recognisePhoto(photoForm) {
-				var response, result;
+				var options, position, response, result;
 				return regeneratorRuntime.async(function recognisePhoto$(_context) {
 					while (1) {
 						switch (_context.prev = _context.next) {
 							case 0:
 								this.setState({
-									isLoading: true
+									isLoading: true,
+									loadingText: 'Getting geolocation'
 								});
-								_context.prev = 1;
+								options = {
+									enableHighAccuracy: true,
+									timeout: 30000,
+									maximumAge: 3000
+								};
+								_context.next = 4;
+								return regeneratorRuntime.awrap(this.getGeoCoding(options));
+
+							case 4:
+								position = _context.sent;
+								photoForm.append('lat', position.coords.latitude);
+								photoForm.append('lon', position.coords.longitude);
+								_context.prev = 7;
 								console.log(photoForm);
-								_context.next = 5;
+								this.setState({
+									isLoading: true,
+									loadingText: 'Sending photo for recognition'
+								});
+								_context.next = 12;
 								return regeneratorRuntime.awrap(fetch('http://192.168.20.55:8000/mpi/upload/', {
 									method: 'POST',
 									headers: {
@@ -88943,71 +89030,48 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 									body: photoForm
 								}));
 
-							case 5:
+							case 12:
 								response = _context.sent;
 
 								if (!(response.ok === true)) {
-									_context.next = 13;
+									_context.next = 21;
 									break;
 								}
 
-								_context.next = 9;
+								_context.next = 16;
 								return regeneratorRuntime.awrap(response.json());
 
-							case 9:
+							case 16:
 								result = _context.sent;
+								console.log(result);
 								this.setState({
 									isLoading: false,
 									diseaseName: result.name
 								});
-								_context.next = 15;
+								_context.next = 23;
 								break;
 
-							case 13:
+							case 21:
 								console.error(response.status + ' ' + response.statusText);
 								this.setState({
 									isLoading: false
 								});
 
-							case 15:
-								_context.next = 20;
+							case 23:
+								_context.next = 28;
 								break;
 
-							case 17:
-								_context.prev = 17;
-								_context.t0 = _context["catch"](1);
+							case 25:
+								_context.prev = 25;
+								_context.t0 = _context["catch"](7);
 								console.log(_context.t0);
 
-							case 20:
+							case 28:
 							case "end":
 								return _context.stop();
 						}
 					}
-				}, null, this, [[1, 17]]);
-			}
-		}, {
-			key: "report",
-			value: function report() {
-				return regeneratorRuntime.async(function report$(_context2) {
-					while (1) {
-						switch (_context2.prev = _context2.next) {
-							case 0:
-								if (this.photoForm) {
-									this.photoForm.append('parsedValue', this.state.diseaseName);
-
-									try {} catch (e) {
-										console.debug(e);
-									} finally {
-										this.navigate('Home', {});
-									}
-								}
-
-							case 1:
-							case "end":
-								return _context2.stop();
-						}
-					}
-				}, null, this);
+				}, null, this, [[7, 25]]);
 			}
 		}]);
 
@@ -89031,13 +89095,835 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 			position: 'absolute',
 			top: 0,
 			left: 0,
-			width: width,
-			height: height,
+			bottom: 0,
+			right: 0,
+			alignItems: 'center',
+			justifyContent: 'center',
+			width: _reactNative.Dimensions.get('window').width,
+			height: _reactNative.Dimensions.get('window').height,
 			opacity: 0.5,
 			backgroundColor: 'white'
+		},
+		ContentCotainer: {
+			flex: 1
+		},
+		ButtonContainer: {
+			bottom: 0
 		}
 	});
 },621,[118,179,12],"Screens/SnapResultScreen.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _react2 = _require(_dependencyMap[0], "react");
+
+	var _react3 = _interopRequireDefault(_react2);
+
+	var _index = _require(_dependencyMap[1], "./../node_modules/react-transform-hmr/lib/index.js");
+
+	var _index2 = _interopRequireDefault(_index);
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _class,
+	    _temp,
+	    _jsxFileName = "/Users/TimMacPro/Projects/snapbio/Screens/AlertListScreen.js";
+
+	var _reactNative = _require(_dependencyMap[2], "react-native");
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _components = {
+		AlertListScreen: {
+			displayName: "AlertListScreen"
+		}
+	};
+
+	var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+		filename: "/Users/TimMacPro/Projects/snapbio/Screens/AlertListScreen.js",
+		components: _components,
+		locals: [module],
+		imports: [_react3.default]
+	});
+
+	function _wrapComponent(id) {
+		return function (Component) {
+			return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+		};
+	}
+
+	var _Dimensions$get = _reactNative.Dimensions.get('window'),
+	    width = _Dimensions$get.width,
+	    height = _Dimensions$get.height;
+
+	var AlertListScreen = _wrapComponent("AlertListScreen")((_temp = _class = function (_React$Component) {
+		_inherits(AlertListScreen, _React$Component);
+
+		function AlertListScreen(props) {
+			_classCallCheck(this, AlertListScreen);
+
+			var _this = _possibleConstructorReturn(this, (AlertListScreen.__proto__ || Object.getPrototypeOf(AlertListScreen)).call(this, props));
+
+			_this.state = {
+				loadingText: 'Processing...',
+				isLoading: false,
+				photoUri: '',
+				alerts: [{
+					id: 1,
+					photoUri: 'https://plantdoctor.co.nz/assets/uploads/2017/05/myrtle-rust-1.jpg',
+					diseaseName: 'Myrtle rust',
+					severity: 'High',
+					zipcode: 8042
+				}]
+			};
+			return _this;
+		}
+
+		_createClass(AlertListScreen, [{
+			key: "componentDidMount",
+			value: function componentDidMount() {}
+		}, {
+			key: "loadingComponent",
+			value: function loadingComponent() {
+				if (this.state.isLoading) {
+					return _react3.default.createElement(
+						_reactNative.View,
+						{
+							style: styles.LoadingIndicator,
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 36
+							}
+						},
+						_react3.default.createElement(_reactNative.ActivityIndicator, {
+							size: "large",
+							color: "#2979FF",
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 37
+							}
+						}),
+						_react3.default.createElement(
+							_reactNative.Text,
+							{
+								style: {
+									color: 'black'
+								},
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 38
+								}
+							},
+							this.loadingText
+						)
+					);
+				} else {
+					return null;
+				}
+			}
+		}, {
+			key: "gotoDetail",
+			value: function gotoDetail(id) {
+				var navigate = this.props.navigation.navigate;
+				navigate('AlertDetail', {
+					id: id
+				});
+			}
+		}, {
+			key: "getCard",
+			value: function getCard(alert) {
+				var _this2 = this;
+
+				return _react3.default.createElement(
+					_reactNative.View,
+					{
+						key: alert.id,
+						style: styles.Card,
+						onClick: function onClick() {
+							return _this2.gotoDetail(alert.id);
+						},
+						__source: {
+							fileName: _jsxFileName,
+							lineNumber: 53
+						}
+					},
+					_react3.default.createElement(
+						_reactNative.View,
+						{
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 54
+							}
+						},
+						_react3.default.createElement(_reactNative.Image, {
+							style: {
+								width: width * 0.9,
+								height: 260
+							},
+							source: {
+								uri: alert.photoUri
+							},
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 55
+							}
+						})
+					),
+					_react3.default.createElement(
+						_reactNative.Text,
+						{
+							style: styles.cardContent,
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 63
+							}
+						},
+						alert.diseaseName
+					),
+					_react3.default.createElement(
+						_reactNative.Text,
+						{
+							style: styles.cardContent,
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 64
+							}
+						},
+						alert.severity
+					)
+				);
+			}
+		}, {
+			key: "render",
+			value: function render() {
+				var _this3 = this;
+
+				var navigation = this.props.navigation;
+				var photoUri = this.state.photoUri;
+				this.navigate = navigation.navigate;
+				return _react3.default.createElement(
+					_reactNative.View,
+					{
+						style: styles.MainContainer,
+						__source: {
+							fileName: _jsxFileName,
+							lineNumber: 77
+						}
+					},
+					_react3.default.createElement(
+						_reactNative.View,
+						{
+							styles: styles.ContentCotainer,
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 78
+							}
+						},
+						_react3.default.createElement(
+							_reactNative.View,
+							{
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 79
+								}
+							},
+							_react3.default.createElement(_reactNative.Image, {
+								style: {
+									width: width * 0.9
+								},
+								source: {
+									uri: photoUri
+								},
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 80
+								}
+							})
+						),
+						_react3.default.createElement(
+							_reactNative.View,
+							{
+								style: {
+									marginTop: 20
+								},
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 87
+								}
+							},
+							this.state.alerts.map(function (alert) {
+								return _this3.getCard(alert);
+							})
+						)
+					),
+					this.loadingComponent()
+				);
+			}
+		}, {
+			key: "getAlerts",
+			value: function getAlerts(alertId) {
+				var response, result;
+				return regeneratorRuntime.async(function getAlerts$(_context) {
+					while (1) {
+						switch (_context.prev = _context.next) {
+							case 0:
+								_context.prev = 0;
+								this.setState({
+									isLoading: true,
+									loadingText: 'Sending photo for recognition'
+								});
+								_context.next = 4;
+								return regeneratorRuntime.awrap(fetch('http://192.168.20.55:8000/mpi/upload/' + alertId, {
+									method: 'GET',
+									headers: {
+										"Accept": "application/json"
+									},
+									body: photoForm
+								}));
+
+							case 4:
+								response = _context.sent;
+
+								if (!(response.ok === true)) {
+									_context.next = 13;
+									break;
+								}
+
+								_context.next = 8;
+								return regeneratorRuntime.awrap(response.json());
+
+							case 8:
+								result = _context.sent;
+								console.log(result);
+								this.setState({
+									isLoading: false,
+									diseaseName: result.name
+								});
+								_context.next = 15;
+								break;
+
+							case 13:
+								console.error(response.status + ' ' + response.statusText);
+								this.setState({
+									isLoading: false
+								});
+
+							case 15:
+								_context.next = 20;
+								break;
+
+							case 17:
+								_context.prev = 17;
+								_context.t0 = _context["catch"](0);
+								console.log(_context.t0);
+
+							case 20:
+							case "end":
+								return _context.stop();
+						}
+					}
+				}, null, this, [[0, 17]]);
+			}
+		}]);
+
+		return AlertListScreen;
+	}(_react3.default.Component), _class.navigationOptions = {
+		title: 'Result'
+	}, _temp));
+
+	exports.default = AlertListScreen;
+
+	var styles = _reactNative.StyleSheet.create({
+		MainContainer: {
+			justifyContent: 'flex-start',
+			alignItems: 'center',
+			flex: 1,
+			backgroundColor: '#F5FCFF',
+			paddingTop: _reactNative.Platform.OS === 'ios' ? 20 : 0
+		},
+		LoadingIndicator: {
+			flex: 1,
+			position: 'absolute',
+			top: 0,
+			left: 0,
+			bottom: 0,
+			right: 0,
+			alignItems: 'center',
+			justifyContent: 'center',
+			width: _reactNative.Dimensions.get('window').width,
+			height: _reactNative.Dimensions.get('window').height,
+			opacity: 0.5,
+			backgroundColor: 'white'
+		},
+		ContentCotainer: {
+			flex: 1
+		},
+		ButtonContainer: {
+			bottom: 0
+		},
+		Card: {
+			shadowOffset: {
+				width: 4,
+				height: 8
+			},
+			shadowColor: 'black',
+			shadowOpacity: 1.0,
+			borderRadius: 5,
+			borderRadius: 4,
+			borderWidth: 1,
+			borderColor: '#d6d7da',
+			backgroundColor: 'white'
+		}
+	});
+},622,[118,179,12],"Screens/AlertListScreen.js");
+__d(function (global, _require, module, exports, _dependencyMap) {
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _react2 = _require(_dependencyMap[0], "react");
+
+	var _react3 = _interopRequireDefault(_react2);
+
+	var _index = _require(_dependencyMap[1], "./../node_modules/react-transform-hmr/lib/index.js");
+
+	var _index2 = _interopRequireDefault(_index);
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _class,
+	    _temp,
+	    _jsxFileName = "/Users/TimMacPro/Projects/snapbio/Screens/AlertDetailScreen.js";
+
+	var _reactNative = _require(_dependencyMap[2], "react-native");
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _components = {
+		AlertDetailScreen: {
+			displayName: "AlertDetailScreen"
+		}
+	};
+
+	var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+		filename: "/Users/TimMacPro/Projects/snapbio/Screens/AlertDetailScreen.js",
+		components: _components,
+		locals: [module],
+		imports: [_react3.default]
+	});
+
+	function _wrapComponent(id) {
+		return function (Component) {
+			return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+		};
+	}
+
+	var _Dimensions$get = _reactNative.Dimensions.get('window'),
+	    width = _Dimensions$get.width,
+	    height = _Dimensions$get.height;
+
+	var AlertDetailScreen = _wrapComponent("AlertDetailScreen")((_temp = _class = function (_React$Component) {
+		_inherits(AlertDetailScreen, _React$Component);
+
+		function AlertDetailScreen(props) {
+			_classCallCheck(this, AlertDetailScreen);
+
+			var _this = _possibleConstructorReturn(this, (AlertDetailScreen.__proto__ || Object.getPrototypeOf(AlertDetailScreen)).call(this, props));
+
+			_this.state = {
+				loadingText: 'Processing...',
+				isLoading: false,
+				photoUri: 'https://plantdoctor.co.nz/assets/uploads/2017/05/myrtle-rust-1.jpg',
+				reportNotes: '',
+				description: '',
+				distribution: '',
+				symptoms: ''
+			};
+			return _this;
+		}
+
+		_createClass(AlertDetailScreen, [{
+			key: "componentDidMount",
+			value: function componentDidMount() {
+				var navigation = this.props.navigation;
+				this.getAlertInfo(navigation.getParam('alertId', -1));
+			}
+		}, {
+			key: "loadingComponent",
+			value: function loadingComponent() {
+				if (this.state.isLoading) {
+					return _react3.default.createElement(
+						_reactNative.View,
+						{
+							style: styles.LoadingIndicator,
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 44
+							}
+						},
+						_react3.default.createElement(_reactNative.ActivityIndicator, {
+							size: "large",
+							color: "#2979FF",
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 45
+							}
+						}),
+						_react3.default.createElement(
+							_reactNative.Text,
+							{
+								style: {
+									color: 'black'
+								},
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 46
+								}
+							},
+							this.loadingText
+						)
+					);
+				} else {
+					return null;
+				}
+			}
+		}, {
+			key: "render",
+			value: function render() {
+				var _this2 = this;
+
+				var navigation = this.props.navigation;
+				var photoUri = this.state.photoUri;
+				this.navigate = navigation.navigate;
+				this.photoDetails = navigation.getParam('photoDetails', {});
+				var screenPhotoRatio = width / this.photoDetails.width;
+				return _react3.default.createElement(
+					_reactNative.View,
+					{
+						style: styles.MainContainer,
+						__source: {
+							fileName: _jsxFileName,
+							lineNumber: 63
+						}
+					},
+					_react3.default.createElement(
+						_reactNative.View,
+						{
+							styles: styles.ContentCotainer,
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 64
+							}
+						},
+						_react3.default.createElement(
+							_reactNative.View,
+							{
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 65
+								}
+							},
+							_react3.default.createElement(_reactNative.Image, {
+								style: {
+									width: this.photoDetails.width * screenPhotoRatio,
+									height: this.photoDetails.height * screenPhotoRatio
+								},
+								source: {
+									uri: photoUri
+								},
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 66
+								}
+							})
+						),
+						_react3.default.createElement(
+							_reactNative.View,
+							{
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 75
+								}
+							},
+							_react3.default.createElement(
+								_reactNative.Text,
+								{
+									style: styles.Title,
+									__source: {
+										fileName: _jsxFileName,
+										lineNumber: 76
+									}
+								},
+								"Report sightings"
+							),
+							_react3.default.createElement(
+								_reactNative.Text,
+								{
+									style: styles.Content,
+									__source: {
+										fileName: _jsxFileName,
+										lineNumber: 79
+									}
+								},
+								this.state.reportNotes
+							),
+							_react3.default.createElement(_reactNative.Button, {
+								title: "Report sightings",
+								onPress: function onPress() {
+									return _this2.navigate('Snap', {});
+								},
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 83
+								}
+							})
+						),
+						_react3.default.createElement(
+							_reactNative.View,
+							{
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 89
+								}
+							},
+							_react3.default.createElement(
+								_reactNative.Text,
+								{
+									style: styles.Title,
+									__source: {
+										fileName: _jsxFileName,
+										lineNumber: 90
+									}
+								},
+								"Description"
+							),
+							_react3.default.createElement(
+								_reactNative.Text,
+								{
+									style: styles.Content,
+									__source: {
+										fileName: _jsxFileName,
+										lineNumber: 93
+									}
+								},
+								this.state.description
+							)
+						),
+						_react3.default.createElement(
+							_reactNative.View,
+							{
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 98
+								}
+							},
+							_react3.default.createElement(
+								_reactNative.Text,
+								{
+									style: styles.Title,
+									__source: {
+										fileName: _jsxFileName,
+										lineNumber: 99
+									}
+								},
+								"Symptoms"
+							),
+							_react3.default.createElement(
+								_reactNative.Text,
+								{
+									style: styles.Content,
+									__source: {
+										fileName: _jsxFileName,
+										lineNumber: 102
+									}
+								},
+								this.state.symptoms
+							)
+						),
+						_react3.default.createElement(
+							_reactNative.View,
+							{
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 107
+								}
+							},
+							_react3.default.createElement(
+								_reactNative.Text,
+								{
+									style: styles.Title,
+									__source: {
+										fileName: _jsxFileName,
+										lineNumber: 108
+									}
+								},
+								"Impact"
+							),
+							_react3.default.createElement(
+								_reactNative.Text,
+								{
+									style: styles.Content,
+									__source: {
+										fileName: _jsxFileName,
+										lineNumber: 111
+									}
+								},
+								this.state.impact
+							)
+						),
+						_react3.default.createElement(
+							_reactNative.View,
+							{
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 116
+								}
+							},
+							_react3.default.createElement(
+								_reactNative.Text,
+								{
+									style: styles.Title,
+									__source: {
+										fileName: _jsxFileName,
+										lineNumber: 117
+									}
+								},
+								"Distribution"
+							),
+							_react3.default.createElement(
+								_reactNative.Text,
+								{
+									style: styles.Content,
+									__source: {
+										fileName: _jsxFileName,
+										lineNumber: 120
+									}
+								},
+								this.state.distribution
+							)
+						)
+					),
+					this.loadingComponent()
+				);
+			}
+		}, {
+			key: "getAlertInfo",
+			value: function getAlertInfo(alertId) {
+				var response, result;
+				return regeneratorRuntime.async(function getAlertInfo$(_context) {
+					while (1) {
+						switch (_context.prev = _context.next) {
+							case 0:
+								_context.prev = 0;
+								this.setState({
+									isLoading: true,
+									loadingText: 'Sending photo for recognition'
+								});
+								_context.next = 4;
+								return regeneratorRuntime.awrap(fetch('http://192.168.20.55:8000/mpi/upload/' + alertId, {
+									method: 'GET',
+									headers: {
+										"Accept": "application/json"
+									},
+									body: photoForm
+								}));
+
+							case 4:
+								response = _context.sent;
+
+								if (!(response.ok === true)) {
+									_context.next = 13;
+									break;
+								}
+
+								_context.next = 8;
+								return regeneratorRuntime.awrap(response.json());
+
+							case 8:
+								result = _context.sent;
+								console.log(result);
+								this.setState({
+									isLoading: false,
+									diseaseName: result.name
+								});
+								_context.next = 15;
+								break;
+
+							case 13:
+								console.error(response.status + ' ' + response.statusText);
+								this.setState({
+									isLoading: false
+								});
+
+							case 15:
+								_context.next = 20;
+								break;
+
+							case 17:
+								_context.prev = 17;
+								_context.t0 = _context["catch"](0);
+								console.log(_context.t0);
+
+							case 20:
+							case "end":
+								return _context.stop();
+						}
+					}
+				}, null, this, [[0, 17]]);
+			}
+		}]);
+
+		return AlertDetailScreen;
+	}(_react3.default.Component), _class.navigationOptions = {
+		title: 'Result'
+	}, _temp));
+
+	exports.default = AlertDetailScreen;
+
+	var styles = _reactNative.StyleSheet.create({
+		MainContainer: {
+			justifyContent: 'flex-start',
+			alignItems: 'center',
+			flex: 1,
+			backgroundColor: '#F5FCFF',
+			paddingTop: _reactNative.Platform.OS === 'ios' ? 20 : 0
+		},
+		LoadingIndicator: {
+			flex: 1,
+			position: 'absolute',
+			top: 0,
+			left: 0,
+			bottom: 0,
+			right: 0,
+			alignItems: 'center',
+			justifyContent: 'center',
+			width: _reactNative.Dimensions.get('window').width,
+			height: _reactNative.Dimensions.get('window').height,
+			opacity: 0.5,
+			backgroundColor: 'white'
+		},
+		ContentCotainer: {
+			flex: 1
+		},
+		ButtonContainer: {
+			bottom: 0
+		}
+	});
+},623,[118,179,12],"Screens/AlertDetailScreen.js");
 require(44);
 require(11);
 //# sourceMappingURL=index.map
