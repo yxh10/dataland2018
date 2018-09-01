@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityIndicator, Button, Dimensions, Image, Platform, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, TouchableOpacity, Button, Dimensions, Image, Platform, StyleSheet, Text, TextInput, View } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 export default class AlertListScreen extends React.Component {
@@ -51,7 +51,7 @@ export default class AlertListScreen extends React.Component {
 
 	getCard(alert) {
 		return (
-			<View key={alert.id} style={styles.Card} onClick={() => this.gotoDetail(alert.id)}>
+			<TouchableOpacity key={alert.id} style={styles.Card} onPress={() => this.gotoDetail(alert.id)}>
 				<View>
 					<Image
 						style= {{
@@ -63,7 +63,7 @@ export default class AlertListScreen extends React.Component {
 				</View>
 				<Text style={styles.cardContent}>{alert.diseaseName}</Text>
 				<Text style={styles.cardContent}>{alert.severity}</Text>
-			</View>
+			</TouchableOpacity>
 		)
 	}
 
@@ -77,18 +77,10 @@ export default class AlertListScreen extends React.Component {
 		return (
 			<View style={ styles.MainContainer }>
 				<View styles={ styles.ContentCotainer}>
-					<View>
-						<Image
-							style= {{
-								width: width * 0.9
-							}}
-							source= {{ uri: photoUri }}
-						/>
-					</View>
 					<View style={{marginTop: 20}}>
-				  {this.state.alerts.map((alert) => {
-						return this.getCard(alert)
-					})}
+						{this.state.alerts.map((alert) => {
+							return this.getCard(alert)
+						})}
 					</View>
 					
 				</View>

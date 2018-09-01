@@ -89232,6 +89232,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 		}, {
 			key: "gotoDetail",
 			value: function gotoDetail(id) {
+				console.log('I am in nav');
 				var navigate = this.props.navigation.navigate;
 				navigate('AlertDetail', {
 					id: id
@@ -89243,16 +89244,16 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 				var _this2 = this;
 
 				return _react3.default.createElement(
-					_reactNative.View,
+					_reactNative.TouchableOpacity,
 					{
 						key: alert.id,
 						style: styles.Card,
-						onClick: function onClick() {
+						onPress: function onPress() {
 							return _this2.gotoDetail(alert.id);
 						},
 						__source: {
 							fileName: _jsxFileName,
-							lineNumber: 53
+							lineNumber: 54
 						}
 					},
 					_react3.default.createElement(
@@ -89260,7 +89261,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 						{
 							__source: {
 								fileName: _jsxFileName,
-								lineNumber: 54
+								lineNumber: 55
 							}
 						},
 						_react3.default.createElement(_reactNative.Image, {
@@ -89273,7 +89274,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 							},
 							__source: {
 								fileName: _jsxFileName,
-								lineNumber: 55
+								lineNumber: 56
 							}
 						})
 					),
@@ -89283,7 +89284,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 							style: styles.cardContent,
 							__source: {
 								fileName: _jsxFileName,
-								lineNumber: 63
+								lineNumber: 64
 							}
 						},
 						alert.diseaseName
@@ -89294,7 +89295,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 							style: styles.cardContent,
 							__source: {
 								fileName: _jsxFileName,
-								lineNumber: 64
+								lineNumber: 65
 							}
 						},
 						alert.severity
@@ -89315,7 +89316,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 						style: styles.MainContainer,
 						__source: {
 							fileName: _jsxFileName,
-							lineNumber: 77
+							lineNumber: 78
 						}
 					},
 					_react3.default.createElement(
@@ -89324,30 +89325,9 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 							styles: styles.ContentCotainer,
 							__source: {
 								fileName: _jsxFileName,
-								lineNumber: 78
+								lineNumber: 79
 							}
 						},
-						_react3.default.createElement(
-							_reactNative.View,
-							{
-								__source: {
-									fileName: _jsxFileName,
-									lineNumber: 79
-								}
-							},
-							_react3.default.createElement(_reactNative.Image, {
-								style: {
-									width: width * 0.9
-								},
-								source: {
-									uri: photoUri
-								},
-								__source: {
-									fileName: _jsxFileName,
-									lineNumber: 80
-								}
-							})
-						),
 						_react3.default.createElement(
 							_reactNative.View,
 							{
@@ -89356,7 +89336,7 @@ __d(function (global, _require, module, exports, _dependencyMap) {
 								},
 								__source: {
 									fileName: _jsxFileName,
-									lineNumber: 87
+									lineNumber: 80
 								}
 							},
 							this.state.alerts.map(function (alert) {
