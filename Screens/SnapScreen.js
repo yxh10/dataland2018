@@ -82,8 +82,7 @@ export default class SnapScreen extends Component {
 					photoForm.append('photo', photo);
 					photoForm.append('name', 'plant_photo');
 					photoForm.append('description', 'I have found something bad');
-					photoForm.append('lon', '100');
-					photoForm.append('lat', '120');
+					
 
 					navigate('SnapResult', { 
 						photoForm: photoForm,

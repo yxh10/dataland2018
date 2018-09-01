@@ -12,7 +12,7 @@ export default class HomeScreen extends Component {
 			<View styles={styles.MainContainer}>
 				<View styles={styles.ButtonList}>
 					<Button
-							title="Snap"
+							title="Report Sighting"
 							styles={ styles.buttonStyle }
 							onPress={() => 
 								{
@@ -20,8 +20,16 @@ export default class HomeScreen extends Component {
 								}
 							}
 						/>
+						<Button
+							title="View Alerts"
+							styles={ styles.buttonStyle }
+							onPress={() => 
+								{
+									navigate('AlertList', {})
+								}
+							}
+						/>
 				</View>
-
 	 		</View>
 		)
 	}

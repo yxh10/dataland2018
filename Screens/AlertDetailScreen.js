@@ -1,9 +1,9 @@
 import React from 'react';
-import { ActivityIndicator, Button, Dimensions, Image, Platform, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Button, Dimensions, Image, Platform, StyleSheet, Text, View } from 'react-native';
 
 
 const { width, height } = Dimensions.get('window');
-export default class SnapResultScreen extends React.Component {
+export default class AlertDetailScreen extends React.Component {
 	static navigationOptions = {
 		title: 'Result',
 	};
@@ -12,18 +12,30 @@ export default class SnapResultScreen extends React.Component {
 		super(props);
 		this.state = {
 			loadingText: 'Processing...',
-			isLoading: false
+			isLoading: false, 
+			photoUri: 'https://plantdoctor.co.nz/assets/uploads/2017/05/myrtle-rust-1.jpg',
+			reportNotes: '',
+			description: '',
+			distribution: '',
+			symptoms: '',
 		}
 
-		this.photoUri = '';
-		this.navigate = {};
-		this.photoForm = {};
+		//todo: add resources
+		// resources: [
+		// 	{
+		// 		name: '',
+		// 		url: ''
+		// 	},
+		// 	{
+		// 		name: '',
+		// 		url: ''
+		// 	}
+		// ]
 	}
 	
 	componentDidMount() {
 		const { navigation } = this.props;
-		this.photoForm = navigation.getParam('photoForm', {});
-		this.recognisePhoto(this.photoForm);
+		this.getAlertInfo(navigation.getParam('alertId', -1));
 	}
 
 	loadingComponent() {
@@ -41,6 +53,7 @@ export default class SnapResultScreen extends React.Component {
 
 	render() {
 		const { navigation } = this.props;
+		const {photoUri} = this.state;
 		
 		this.navigate = navigation.navigate;
 		this.photoDetails = navigation.getParam('photoDetails', {});
@@ -55,22 +68,72 @@ export default class SnapResultScreen extends React.Component {
 								width: this.photoDetails.width * screenPhotoRatio,
 								height: this.photoDetails.height * screenPhotoRatio
 							}}
-							source= {{ uri: this.photoDetails.uri }}
+							source= {{ uri: photoUri }}
 						/>
 					</View>
 
 					<View>
-						<Text>
-							The disease is: { this.state.diseaseName }
+						<Text style={styles.Title}>
+							Report sightings
 						</Text>
-					</View>
+						<Text style={styles.Content}>
+							{this.state.reportNotes}
+						</Text>
 
-					<View style={ styles.ButtonContainer}>
 						<Button
-							title="Snap"
+							title="Report sightings"
 							onPress={() => this.navigate('Snap', {})}
 						/>
 					</View>
+					
+					<View>
+						<Text style={styles.Title}>
+							Description
+						</Text>
+						<Text style={styles.Content}>
+							{this.state.description}
+						</Text>
+					</View>
+
+					<View>
+						<Text style={styles.Title}>
+							Symptoms
+						</Text>
+						<Text style={styles.Content}>
+							{this.state.symptoms}
+						</Text>
+					</View>
+
+					<View>
+						<Text style={styles.Title}>
+							Impact
+						</Text>
+						<Text style={styles.Content}>
+							{this.state.impact}
+						</Text>
+					</View>
+
+					<View>
+						<Text style={styles.Title}>
+						Distribution
+						</Text>
+						<Text style={styles.Content}>
+							{this.state.distribution}
+						</Text>
+					</View>
+					
+					{/* todo: add resources */}
+					{/* <View>
+						<Text style={styles.Title}>
+						Resources
+						</Text>
+						<Text style={styles.Content}>
+							{this.state.resources.map((item) => {
+
+							})}
+						</Text>
+					</View> */}
+
 				</View>
 				
 				{ this.loadingComponent() }
@@ -78,34 +141,16 @@ export default class SnapResultScreen extends React.Component {
 		)
 	}
 
-	getGeoCoding(options = {}) {
-		return new Promise((resolve, reject) => {
-			return navigator.geolocation.getCurrentPosition(resolve, reject, options);
-		})
-	}
 
-	async recognisePhoto(photoForm) {
-
-		this.setState({
-			isLoading: true,
-			loadingText: 'Getting geolocation'
-		});
-
-		const options = { enableHighAccuracy: true, timeout: 30000, maximumAge: 3000 };
-		const position = await this.getGeoCoding(options);
-		photoForm.append('lat', position.coords.latitude);
-		photoForm.append('lon', position.coords.longitude);
-
+	async getAlertInfo(alertId) {
 		try {	
-			console.log(photoForm)
-
 			this.setState({
 				isLoading: true,
 				loadingText: 'Sending photo for recognition'
 			});
 
-			const response = await fetch('http://192.168.20.55:8000/mpi/upload/', {
-				method: 'POST',
+			const response = await fetch('http://192.168.20.55:8000/mpi/upload/' + alertId, {
+				method: 'GET',
 				headers: {
 					"Accept": "application/json"
 				},

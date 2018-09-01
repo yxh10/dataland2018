@@ -1,9 +1,9 @@
 import React from 'react';
 import { ActivityIndicator, Button, Dimensions, Image, Platform, StyleSheet, Text, TextInput, View } from 'react-native';
-
+import { Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
 
 const { width, height } = Dimensions.get('window');
-export default class SnapResultScreen extends React.Component {
+export default class AlertListScreen extends React.Component {
 	static navigationOptions = {
 		title: 'Result',
 	};
@@ -12,18 +12,22 @@ export default class SnapResultScreen extends React.Component {
 		super(props);
 		this.state = {
 			loadingText: 'Processing...',
-			isLoading: false
+			isLoading: false, 
+			photoUri: '',
+			alerts: [
+				{
+					photoUri: 'https://plantdoctor.co.nz/assets/uploads/2017/05/myrtle-rust-1.jpg',
+					diseaseName: 'Myrtle rust',
+					severity: 'High',
+					zipcode: 8042
+				}
+			]
 		}
-
-		this.photoUri = '';
-		this.navigate = {};
-		this.photoForm = {};
 	}
 	
 	componentDidMount() {
-		const { navigation } = this.props;
-		this.photoForm = navigation.getParam('photoForm', {});
-		this.recognisePhoto(this.photoForm);
+		// todo: get real data here
+		// this.getAlerts(this.state.zipcode);
 	}
 
 	loadingComponent() {
@@ -39,11 +43,48 @@ export default class SnapResultScreen extends React.Component {
 		}
 	}
 
+	getCard(alert) {
+		return (
+			<Card>
+				<CardItem>
+					<Left>
+						<Thumbnail source={{uri: 'Image URL'}} />
+						<Body>
+							<Text>NativeBase</Text>
+							<Text note>GeekyAnts</Text>
+						</Body>
+					</Left>
+				</CardItem>
+				<CardItem cardBody>
+					<Image source={{uri: alert.photoUri}} style={{height: 200, width: null, flex: 1}}/>
+				</CardItem>
+				<CardItem>
+					<Left>
+						<Text>{alert.name}</Text>
+						<Button transparent>
+							<Icon active name="thumbs-up" />
+							<Text>12 Likes</Text>
+						</Button>
+					</Left>
+					<Body>
+						<Button transparent>
+							<Icon active name="chatbubbles" />
+							<Text>4 Comments</Text>
+						</Button>
+					</Body>
+					<Right>
+						<Text>11h ago</Text>
+					</Right>
+				</CardItem>
+			</Card>
+		)
+	}
+
 	render() {
 		const { navigation } = this.props;
+		const {photoUri} = this.state;
 		
 		this.navigate = navigation.navigate;
-		this.photoDetails = navigation.getParam('photoDetails', {});
 		const screenPhotoRatio = width / this.photoDetails.width;
 
 		return (
@@ -55,57 +96,30 @@ export default class SnapResultScreen extends React.Component {
 								width: this.photoDetails.width * screenPhotoRatio,
 								height: this.photoDetails.height * screenPhotoRatio
 							}}
-							source= {{ uri: this.photoDetails.uri }}
+							source= {{ uri: photoUri }}
 						/>
 					</View>
 
-					<View>
-						<Text>
-							The disease is: { this.state.diseaseName }
-						</Text>
-					</View>
-
-					<View style={ styles.ButtonContainer}>
-						<Button
-							title="Snap"
-							onPress={() => this.navigate('Snap', {})}
-						/>
-					</View>
+				  {this.state.alerts.map((alert) => {
+						this.getCard(alert)
+					})}
+					
 				</View>
-				
 				{ this.loadingComponent() }
 			</View>
 		)
 	}
 
-	getGeoCoding(options = {}) {
-		return new Promise((resolve, reject) => {
-			return navigator.geolocation.getCurrentPosition(resolve, reject, options);
-		})
-	}
 
-	async recognisePhoto(photoForm) {
-
-		this.setState({
-			isLoading: true,
-			loadingText: 'Getting geolocation'
-		});
-
-		const options = { enableHighAccuracy: true, timeout: 30000, maximumAge: 3000 };
-		const position = await this.getGeoCoding(options);
-		photoForm.append('lat', position.coords.latitude);
-		photoForm.append('lon', position.coords.longitude);
-
+	async getAlerts(alertId) {
 		try {	
-			console.log(photoForm)
-
 			this.setState({
 				isLoading: true,
 				loadingText: 'Sending photo for recognition'
 			});
 
-			const response = await fetch('http://192.168.20.55:8000/mpi/upload/', {
-				method: 'POST',
+			const response = await fetch('http://192.168.20.55:8000/mpi/upload/' + alertId, {
+				method: 'GET',
 				headers: {
 					"Accept": "application/json"
 				},
